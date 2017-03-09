@@ -63,7 +63,7 @@ dataType C_MatlabExchange::decodeType(std::string _type, dim _dim)
 			type = dataType::FLOAT;
 		if(name_of_type.find("double")!=string::npos)	// it is double
 			type = dataType::DOUBLE;
-		if(name_of_type.find("unsigned short")!=string::npos)
+		if(name_of_type.find("ushort")!=string::npos)
 			type = dataType::USHORT;
 		break;
 	case dim::d2D:
@@ -71,7 +71,7 @@ dataType C_MatlabExchange::decodeType(std::string _type, dim _dim)
 			type = dataType::FLOAT2D;
 		if(name_of_type.find("double")!=string::npos)	// it is double
 			type = dataType::DOUBLE2D;
-		if(name_of_type.find("unsigned short")!=string::npos)
+		if(name_of_type.find("ushort")!=string::npos)
 			type = dataType::USHORT2D;
 		break;
 	default:

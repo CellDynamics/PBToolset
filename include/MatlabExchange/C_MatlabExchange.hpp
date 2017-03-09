@@ -65,10 +65,10 @@ public:
 	C_MatlabExchange(const char* filename);
 	/// Adds 1D data of basic types
 	template<typename T>
-	void AddEntry1D(const T* data, unsigned int size, const char* name);
+	void AddEntry1D(const T* data, unsigned int size, const char* name, const char* typeName);
 	/// Adds 2D data of basic types
 	template<typename T>
-	void AddEntry2D(const T* data, unsigned int rows, unsigned int cols, const char* name);
+	void AddEntry2D(const T* data, unsigned int rows, unsigned int cols, const char* name, const char* typeName);
 	/// Reads data from dat file
 	static void ReadData(const char* filename,  std::unique_ptr<double[]>& _data, unsigned int& rows, unsigned int& cols );
 	~C_MatlabExchange(void);
@@ -87,6 +87,7 @@ private:
 * \param[in] data pointer to data to be dumped to file
 * \param[in] size size of the data pointed by \c data
 * \param[in] name name of the entry assigned later in matlab
+* \param[in] typeName name of the type according to dataType 
 * \exception ios_base::badbit - on disk read error etc
 * \exception ios_base::failbit - wrong conversion etc
 * \exception std::logic_error - when MAX_ENTRY reached or unsuppoerted type of data
@@ -94,7 +95,7 @@ private:
 * \ref ImportDumpFile.m
 */
 template<typename T>
-void C_MatlabExchange::AddEntry1D(const T* data,unsigned int size, const char* name)
+void C_MatlabExchange::AddEntry1D(const T* data,unsigned int size, const char* name, const char* typeName )
 {
 	dataType type;
 	unsigned long ile;	// number of writen bytes
@@ -103,7 +104,7 @@ void C_MatlabExchange::AddEntry1D(const T* data,unsigned int size, const char* n
 	if(lastpozindex >= MAX_ENTRY)
 		throw std::logic_error("Maximal entry number reached");
 
-	type = decodeType(typeid(data).name(), dim::d1D);
+	type = decodeType(typeName, dim::d1D);
 	sl = static_cast<unsigned int>(strlen(name));
 	// we know type, now start to write data to disk
 	unsigned int itype = static_cast<unsigned int>(type);
@@ -128,6 +129,7 @@ void C_MatlabExchange::AddEntry1D(const T* data,unsigned int size, const char* n
 * \param[in] rows number of rows of data pointed by \c data
 * \param[in] cols number of columns of data
 * \param[in] name name of the entry assigned later in matlab
+* \param[in] typeName name of the type according to dataType
 * \exception ios_base::badbit - on disk read error etc
 * \exception ios_base::failbit - wrong conversion etc
 * \exception std::logic_error - when MAX_ENTRY reached or unsuppoerted type of data
@@ -135,7 +137,7 @@ void C_MatlabExchange::AddEntry1D(const T* data,unsigned int size, const char* n
 * \warning Do not check if size_of_array == rows*cols, assumes that it is true
 */
 template<typename T>
-void C_MatlabExchange::AddEntry2D(const T* data,unsigned int rows, unsigned int cols, const char* name)
+void C_MatlabExchange::AddEntry2D(const T* data,unsigned int rows, unsigned int cols, const char* name, const char* typeName)
 {
 	dataType type;
 	unsigned long ile;	// number of writen bytes
@@ -144,7 +146,7 @@ void C_MatlabExchange::AddEntry2D(const T* data,unsigned int rows, unsigned int 
 	if(lastpozindex >= MAX_ENTRY)
 		throw std::logic_error("Maximal entry number reached");
 
-	type = decodeType(typeid(data).name(), dim::d2D);
+	type = decodeType(typeName, dim::d2D);
 	sl = static_cast<unsigned int>(strlen(name));
 	// we know type, now start to write data to disk
 	unsigned int itype = static_cast<unsigned int>(type);

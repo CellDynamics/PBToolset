@@ -9,6 +9,10 @@ set(ROOT_PROJECT_NAME "PBToolset")
 
 project(${ROOT_PROJECT_NAME})
 
+IF(WIN32)
+	enable_language(RC)
+ENDIF()
+
 # If these variables exist (passed from external project) local External Project will not be build
 IF(GTest_LIB AND GTest_SRC)
 	set(BUILD_GTEST FALSE)
@@ -18,14 +22,14 @@ ELSE()
 	message("Using local build of Gtest")
 ENDIF()
 # If these variables are set in env build is performed offline:
-#	GTest_SVN_REPOSITORY - any value (gtest must be in /external_dep/gtest)
-IF(DEFINED ENV{GTest_SVN_REPOSITORY})
-	set(GTest_SVN_REPOSITORY $ENV{GTest_SVN_REPOSITORY})
+#	GTest_GIT_REPOSITORY - any value (gtest must be in /external_dep/gtest)
+IF(DEFINED ENV{GTest_GIT_REPOSITORY})
+	set(GTest_GIT_REPOSITORY $ENV{GTest_GIT_REPOSITORY})
 	message("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	message("Use local gtest repo " External_dep/gtest)
 	message("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ELSE ()
-	set(GTest_SVN_REPOSITORY http://googletest.googlecode.com/svn/trunk/) 
+	set(GTest_GIT_REPOSITORY https://github.com/google/googletest.git) 
 ENDIF()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -34,8 +38,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 file(MAKE_DIRECTORY lib)
 # create doc output directory that can be removed by clean-build
 file(MAKE_DIRECTORY doc)
-
-enable_language(RC)
 
 include(ExternalProject)
 add_subdirectory(External_dep)

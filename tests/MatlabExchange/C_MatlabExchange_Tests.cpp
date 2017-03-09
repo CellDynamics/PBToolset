@@ -30,7 +30,7 @@ TEST(C_MatlabExchange,_cantCreateFile)
 	bool exceptionThrown = false;
 	try
 	{
-		C_MatlabExchange testObject("z:\\dupa");	// drive z do not exist
+		C_MatlabExchange testObject("/df/dupa");	// drive z do not exist
 	}
 	catch(std::ios_base::failure& ex)
 	{
@@ -121,9 +121,9 @@ TEST(C_MatlabExchange,_addEntry1D)
 	try
 	{
 		C_MatlabExchange testObject("matlab_addentry.dat");	// create file
-		testObject.AddEntry1D<float>(tabf, 256, "float_256");
-		testObject.AddEntry1D<double>(tabd, 256, "double_256");
-		testObject.AddEntry1D<UINT16>(tab16, 25, "uint16_25");
+		testObject.AddEntry1D<float>(tabf, 256, "float_256", "float");
+		testObject.AddEntry1D<double>(tabd, 256, "double_256", "double");
+		testObject.AddEntry1D<UINT16>(tab16, 25, "uint16_25", "ushort");
 		std::cout << "Verify this test in Matlab" << std::endl;
 	}
 	catch(std::ios_base::failure& ex)
@@ -154,8 +154,8 @@ TEST(C_MatlabExchange,_addEntry2D)
 	try
 	{
 		C_MatlabExchange testObject("matlab_addentry2D.dat");	// create file
-		testObject.AddEntry1D<float>(tabf, 256, "float_256");
-		testObject.AddEntry2D<UINT16>(tab16, 10, 10, "uint16_252D");
+		testObject.AddEntry1D<float>(tabf, 256, "float_256", "float");
+		testObject.AddEntry2D<UINT16>(tab16, 10, 10, "uint16_252D", "double");
 		std::cout << "Verify this test in Matlab" << std::endl;
 	}
 	catch(std::ios_base::failure& ex)
@@ -182,7 +182,7 @@ TEST(C_MatlabExchange,AddEntryWrongDataType)
 	try
 	{
 		C_MatlabExchange testObject("addentry");	// create file
-		EXPECT_THROW(testObject.AddEntry1D<unsigned long>(tab, 256, "char_256"),std::logic_error);
+		EXPECT_THROW(testObject.AddEntry1D<unsigned long>(tab, 256, "char_256","char"),std::logic_error);
 	}
 	catch(std::ios_base::failure& ex)	// check problem with file creating
 	{
