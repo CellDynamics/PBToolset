@@ -1,8 +1,8 @@
 # Ignore build dir and CMake stuff
 
 [Bb]in
-lib
-doc
+/lib
+/doc
 MSVC
 
 # cmake stuff
